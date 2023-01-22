@@ -3,9 +3,12 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:netpace/app/feature/api_service/complain_service.dart';
+import 'package:netpace/app/feature/data/model/complaint.dart';
 import 'package:netpace/app/feature/services/bottom_sheet_service.dart';
 import 'package:netpace/app/feature/services/dialog_box_service.dart';
 import 'package:netpace/app/feature/services/locator.dart';
+import 'package:netpace/initializers.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -23,12 +26,21 @@ class ComplaintsListViewModel extends BaseViewModel
     "https://www.manchester.ac.uk/study/international/country-specific-information/india/India-profile-video-pic-070519-edited.jpg"
   ];
   DialogService _dialogService = locator<DialogService>();
+  final ComplainService _complainService = locator<ComplainService>();
+  List<Complain> complains = [];
 
+  bool _loading = false;
+  bool get loading =>_loading;
+  set loading(bool value)
+  {
+    _loading = value;
+    notifyListeners();
+  }
 
 
   Future<void> init()async
   {
-
+   await getComplains();
   }
 
 
@@ -45,6 +57,26 @@ class ComplaintsListViewModel extends BaseViewModel
         return Colors.black;
     }
   }
+
+  Future<void> getComplains()async
+  {
+    // getComplains
+    loading = true;
+    final response = await _complainService.getComplains();
+    print(response.data);
+    if (response.success) {
+      response.data.forEach((element) {
+        complains.add(Complain.fromJson(element));
+      });
+      notifyListeners();
+    } else {
+      snackbarKey.currentState?.hideCurrentSnackBar();
+      snackbarKey.currentState
+          ?.showSnackBar(SnackBar(content: Text(response.error)));
+    }
+
+    loading = false;
+  }
   Future<void> showCustomBottomSheet() async {
     var sheetResponse = await _dialogService.showCustomDialog(
       variant: DialogBoxType.complainDialog,
@@ -54,4 +86,7 @@ class ComplaintsListViewModel extends BaseViewModel
 
     print('confirmationResponse confirmed: ${sheetResponse?.confirmed}');
   }
+
+
+
 }

@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:netpace/app/feature/api_service/auth_service.dart';
 import 'package:netpace/app/feature/login/viewmodel/login_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 
@@ -49,74 +50,72 @@ class LoginView extends StatelessWidget {
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      child: TextField(
-                        onTap: ()async{
+                    TextField(
+                      controller: model.email,
+                      onTap: ()async{
 
-                        },
-                        focusNode: model.focusEmail,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.done,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'OpenSans',
+                      },
+                      focusNode: model.focusEmail,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.done,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade400,
+                          ),
                         ),
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                        focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                              )
-                          ),
-                          prefixIcon: Icon(
-                            Icons.alternate_email,
-                            color: model.focusEmail.hasFocus ? Theme.of(context).primaryColor : Colors.grey.shade400,
-                          ),
-                          hintText: 'Email',
+                              color: Theme.of(context).primaryColor,
+                            )
                         ),
+                        prefixIcon: Icon(
+                          Icons.alternate_email,
+                          color: model.focusEmail.hasFocus ? Theme.of(context).primaryColor : Colors.grey.shade400,
+                        ),
+                        hintText: 'Email',
                       ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      child: TextField(
-                        onTap: (){},
-                        focusNode: model.focusPass,
-                        keyboardType: TextInputType.visiblePassword,
-                        textInputAction: TextInputAction.done,
-                        obscureText: true,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'OpenSans',
+                    TextField(
+                      controller: model.password,
+                      onTap: (){},
+                      focusNode: model.focusPass,
+                      keyboardType: TextInputType.visiblePassword,
+                      textInputAction: TextInputAction.done,
+                      obscureText: true,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontFamily: 'OpenSans',
+                      ),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.grey.shade400,
+                          ),
                         ),
-                        decoration: InputDecoration(
-                          enabledBorder: UnderlineInputBorder(
+                        focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
-                              color: Colors.grey.shade400,
-                            ),
-                          ),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Theme.of(context).primaryColor,
-                              )
-                          ),
-                          prefixIcon: Icon(
-                            Icons.lock_outline,
-                            color: model.focusPass.hasFocus ? Theme.of(context).primaryColor : Colors.grey.shade400,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              Icons.help,
                               color: Theme.of(context).primaryColor,
-                            ), onPressed: () {  },
-                          ),
-                          hintText: 'Password',
+                            )
                         ),
+                        prefixIcon: Icon(
+                          Icons.lock_outline,
+                          color: model.focusPass.hasFocus ? Theme.of(context).primaryColor : Colors.grey.shade400,
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.help,
+                            color: Theme.of(context).primaryColor,
+                          ), onPressed: () {  },
+                        ),
+                        hintText: 'Password',
                       ),
                     ),
                     SizedBox(
@@ -126,9 +125,9 @@ class LoginView extends StatelessWidget {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: ()async{
-                        await model.navigateToComplaintList();
+                          await model.loginUser();
                       },
-                        child: Text('Login'),
+                        child:model.loginLoading?CircularProgressIndicator.adaptive() :Text('Login'),
                         style: ButtonStyle(
                             elevation: MaterialStateProperty.all(0),
                             backgroundColor: MaterialStateProperty.all(Color(0xff0165ff)),
@@ -150,35 +149,6 @@ class LoginView extends StatelessWidget {
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
                       ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        IconButton(
-                          icon: Image.asset('images/google.png'),
-                          iconSize: 50,
-                          onPressed: () {},
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        IconButton(
-                          icon: Image.asset('images/fb.png'),
-                          iconSize: 50,
-                          onPressed: () {},
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        IconButton(
-                          icon: Image.asset('images/twitter.png'),
-                          iconSize: 50,
-                          onPressed: () {},
-                        ),
-                      ],
                     ),
                     SizedBox(
                       height: 20,

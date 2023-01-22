@@ -58,7 +58,7 @@ dependencies:
   stacked: ^3.0.0
   stacked_services: ^0.9.4
   get_it: ^7.2.0
-  shared_preferences: ^2.0.13
+  shared_preferences: ^2.0.17
   image_picker: ^0.8.4+11
   dropdown_button2: ^1.9.2
 

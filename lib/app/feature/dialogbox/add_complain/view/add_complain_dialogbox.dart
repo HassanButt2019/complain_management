@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:netpace/app/feature/data/model/location.dart';
+import 'package:netpace/app/feature/data/model/type.dart';
 import 'package:netpace/app/feature/dialogbox/add_complain/viewmodel/add_complain_viewmodel.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -19,7 +21,7 @@ class AddComplainBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<AddComplainViewModel>.reactive(
-        // onModelReady: (model) async => await model.init(),
+        onModelReady: (data) async => await data.init(),
         viewModelBuilder: () => AddComplainViewModel(),
         builder: (context, model, child) {
           return Dialog(
@@ -73,7 +75,7 @@ class AddComplainBottomSheet extends StatelessWidget {
                             height: 5,
                           ),
                           TextFormField(
-                            // controller: titleController,
+                            controller: model.title,
                             // ignore: missing_return
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -108,7 +110,7 @@ class AddComplainBottomSheet extends StatelessWidget {
                             height: 5,
                           ),
                           TextFormField(
-                            // controller: subjectController,
+                            controller: model.subject,
                             // ignore: missing_return
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -136,8 +138,8 @@ class AddComplainBottomSheet extends StatelessWidget {
                                crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  Text("Complain Type",style: TextStyle(fontWeight: FontWeight.bold),),
-                                 DropdownButtonHideUnderline(
-                                   child: DropdownButton2(
+                                 model.loadingLocation?CircularProgressIndicator.adaptive():DropdownButtonHideUnderline(
+                                   child: DropdownButton2<Location>(
                                      isExpanded: true,
                                      hint: Text(
                                        'Select Item',
@@ -148,20 +150,21 @@ class AddComplainBottomSheet extends StatelessWidget {
                                              .hintColor,
                                        ),
                                      ),
-                                     items: model.items
+                                     items: model.locations
                                          .map((item) =>
-                                         DropdownMenuItem<String>(
+                                         DropdownMenuItem<Location>(
                                            value: item,
                                            child: Text(
-                                             item,
+                                             item.address,
                                              style: const TextStyle(
                                                fontSize: 14,
                                              ),
                                            ),
                                          ))
                                          .toList(),
-                                     value: model.selectedValue,
+                                     value: model.selectedLocation,
                                      onChanged: (value) {
+                                       model.selectedLocation = value!;
                                        // setState(() {
                                        //   selectedValue = value as String;
                                        // });
@@ -178,8 +181,8 @@ class AddComplainBottomSheet extends StatelessWidget {
                                crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  Text("Complain Location",style: TextStyle(fontWeight: FontWeight.bold),),
-                                 DropdownButtonHideUnderline(
-                                   child: DropdownButton2(
+                                model.loadingTypes?CircularProgressIndicator.adaptive(): DropdownButtonHideUnderline(
+                                   child: DropdownButton2<ComplainType>(
                                      isExpanded: true,
                                      hint: Text(
                                        'Select Item',
@@ -190,20 +193,21 @@ class AddComplainBottomSheet extends StatelessWidget {
                                              .hintColor,
                                        ),
                                      ),
-                                     items: model.items
+                                     items: model.types
                                          .map((item) =>
-                                         DropdownMenuItem<String>(
+                                         DropdownMenuItem<ComplainType>(
                                            value: item,
                                            child: Text(
-                                             item,
+                                             item.complainType,
                                              style: const TextStyle(
                                                fontSize: 14,
                                              ),
                                            ),
                                          ))
                                          .toList(),
-                                     value: model.selectedValue,
+                                     value: model.selectedType,
                                      onChanged: (value) {
+                                       model.selectedType= value!;
                                        // setState(() {
                                        //   selectedValue = value as String;
                                        // });
@@ -239,8 +243,13 @@ class AddComplainBottomSheet extends StatelessWidget {
                               borderRadius: BorderRadius.circular(25),
                             ),
                           ),
-                          onPressed: () => completer(DialogResponse(confirmed: true)),
-                          child: Text(
+                          onPressed: ()async{
+                            await model.addComplain();
+                             // .then((value) {
+                             //   // completer(DialogResponse(confirmed: value));
+                             // });
+                          },
+                          child:model.adding?CircularProgressIndicator.adaptive() :Text(
                             "Add",
                             style: TextStyle(color: Colors.white),
                           ),

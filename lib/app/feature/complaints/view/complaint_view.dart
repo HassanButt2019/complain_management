@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:netpace/app/feature/complaints/viewmodel/complaint_viewmodel.dart';
+import 'package:netpace/app/feature/data/model/complaint.dart';
 import 'package:stacked/stacked.dart';
 
 class ComplaintsListView extends StatelessWidget {
@@ -30,18 +31,20 @@ class ComplaintsListView extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
+                    model.loading?Center(child: CircularProgressIndicator.adaptive(),):
                     SizedBox(
                         height: MediaQuery.of(context).size.height * 0.95,
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
-                          itemCount: 5,
+                          itemCount: model.complains.length,
                           itemBuilder: (context, index) {
-                            return const ComplainListItem(
-                                title: "Covid-19 Safety",
-                                detail: "Sanitization required",
-                                status: "Issue");
+                             final Complain c = model.complains[index];
+                            return  ComplainListItem(
+                                title:c.complainTitle,
+                                detail: c.discription,
+                                status: c.status);
                           },
                         )),
                   ],
