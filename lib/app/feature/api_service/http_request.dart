@@ -40,6 +40,22 @@ Future<http.Response> post(Uri url,
   }
 }
 
+Future<http.Response> patch(Uri url,
+    {Map<String, String>? headers, Object? body, Encoding? encoding}) async {
+  try {
+    final response =
+    await http.patch(url, headers: headers, body: body, encoding: encoding);
+    handleExceptions(response.body);
+    return response;
+  } on SocketException catch (error) {
+    return http.Response(error.message, 400);
+  } on TimeoutException catch (e) {
+    return http.Response(e.message.toString(), 408);
+  } on Error catch (e) {
+    return http.Response(e.toString(), 400);
+  }
+}
+
 void handleExceptions(String response) async {
 
   final responseBody = jsonDecode(response);

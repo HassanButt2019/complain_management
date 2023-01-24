@@ -54,7 +54,7 @@ class ComplainService extends BaseService
     final prefs = await SharedPreferences.getInstance();
     final body = jsonEncode({
       "complainTitle": title,
-      "status": "Issued",
+      "status": "New",
       "discription": desc,
       "complainProducer": "63cd706fce190dac0c868155",
       "complainConsumer":  prefs.get("userId"),
@@ -62,9 +62,24 @@ class ComplainService extends BaseService
       "complainLocation": loc.id
     });
 
+
     final http.Response response = await post(
       Uri.parse("${super.baseUrl}api/complain-management/complain/"),
       body: body,
+      headers: {
+        "Accept": "application/json",
+        "content-type": "application/json"
+      },
+    );
+    final responseBody = jsonDecode(response.body);
+    return ApiResponse.fromJson(responseBody);
+  }
+
+  Future<ApiResponse> updateComplainStatus(String id , String status) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final http.Response response = await patch(
+      Uri.parse("${super.baseUrl}api/complain-management/complain/status/$id?status=$status"),
       headers: {
         "Accept": "application/json",
         "content-type": "application/json"

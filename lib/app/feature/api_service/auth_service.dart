@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 class AuthService extends BaseService {
   Future<ApiResponse> loginUser(String email, String password) async {
     final body = jsonEncode({"email": email, "password": password});
-
     final http.Response response = await post(
       Uri.parse("${super.baseUrl}api/user-management/auth/producer"),
       body: body,

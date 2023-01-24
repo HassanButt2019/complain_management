@@ -36,7 +36,6 @@ class AddComplainBottomSheet extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-
                   Text(
                     request.title ?? "",
                     style: TextStyle(
@@ -131,92 +130,102 @@ class AddComplainBottomSheet extends StatelessWidget {
                           SizedBox(
                             height: 20,
                           ),
-                         Row(
+                         Column(
                            children: [
                              Column(
                                mainAxisAlignment: MainAxisAlignment.start,
                                crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  Text("Complain Type",style: TextStyle(fontWeight: FontWeight.bold),),
-                                 model.loadingLocation?CircularProgressIndicator.adaptive():DropdownButtonHideUnderline(
-                                   child: DropdownButton2<Location>(
-                                     isExpanded: true,
-                                     hint: Text(
-                                       'Select Item',
-                                       style: TextStyle(
-                                         fontSize: 14,
-                                         color: Theme
-                                             .of(context)
-                                             .hintColor,
+                                 model.loadingTypes?
+                                 CircularProgressIndicator.adaptive() :
+                                 SizedBox(
+                                   width: MediaQuery.of(context).size.width,
+                                   child: DropdownButtonHideUnderline(
+                                     child: DropdownButton2<ComplainType>(
+                                       isExpanded: true,
+                                       hint: Text(
+                                         'Select Item',
+                                         style: TextStyle(
+                                           fontSize: 14,
+                                           color: Theme
+                                               .of(context)
+                                               .hintColor,
+                                         ),
                                        ),
-                                     ),
-                                     items: model.locations
-                                         .map((item) =>
-                                         DropdownMenuItem<Location>(
-                                           value: item,
-                                           child: Text(
-                                             item.address,
-                                             style: const TextStyle(
-                                               fontSize: 14,
+                                       items: model.types
+                                           .map((item) =>
+                                           DropdownMenuItem<ComplainType>(
+                                             value: item,
+                                             child: Text(
+                                               item.complainType,
+                                               style: const TextStyle(
+                                                 fontSize: 14,
+                                               ),
                                              ),
-                                           ),
-                                         ))
-                                         .toList(),
-                                     value: model.selectedLocation,
-                                     onChanged: (value) {
-                                       model.selectedLocation = value!;
-                                       // setState(() {
-                                       //   selectedValue = value as String;
-                                       // });
-                                     },
-                                     buttonHeight: 40,
-                                     buttonWidth: 140,
-                                     itemHeight: 40,
+                                           ))
+                                           .toList(),
+                                       value: model.selectedType,
+                                       onChanged: (value) {
+                                         model.selectedType = value!;
+                                         // setState(() {
+                                         //   selectedValue = value as String;
+                                         // });
+                                       },
+                                       buttonHeight: 40,
+                                       buttonWidth: 140,
+                                       itemHeight: 40,
+                                     ),
                                    ),
                                  ),
                                ],
                              ),
+                             SizedBox(height: 10.h,),
                              Column(
                                mainAxisAlignment: MainAxisAlignment.start,
                                crossAxisAlignment: CrossAxisAlignment.start,
                                children: [
                                  Text("Complain Location",style: TextStyle(fontWeight: FontWeight.bold),),
-                                model.loadingTypes?CircularProgressIndicator.adaptive(): DropdownButtonHideUnderline(
-                                   child: DropdownButton2<ComplainType>(
-                                     isExpanded: true,
-                                     hint: Text(
-                                       'Select Item',
-                                       style: TextStyle(
-                                         fontSize: 14,
-                                         color: Theme
-                                             .of(context)
-                                             .hintColor,
+                                model.loadingLocation?CircularProgressIndicator.adaptive():
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  child: DropdownButtonHideUnderline(
+                                     child: DropdownButton2<Location>(
+                                       isExpanded: true,
+                                       hint: Text(
+                                         'Select Item',
+                                         style: TextStyle(
+                                           fontSize: 14,
+                                           color: Theme
+                                               .of(context)
+                                               .hintColor,
+                                         ),
                                        ),
-                                     ),
-                                     items: model.types
-                                         .map((item) =>
-                                         DropdownMenuItem<ComplainType>(
-                                           value: item,
-                                           child: Text(
-                                             item.complainType,
-                                             style: const TextStyle(
-                                               fontSize: 14,
+                                       items: model.locations
+                                           .map((item) =>
+                                           DropdownMenuItem<Location>(
+                                             value: item,
+                                             child: Text(
+                                               item.address,
+                                               style: const TextStyle(
+                                                 fontSize: 14,
+                                               ),
                                              ),
-                                           ),
-                                         ))
-                                         .toList(),
-                                     value: model.selectedType,
-                                     onChanged: (value) {
-                                       model.selectedType= value!;
-                                       // setState(() {
-                                       //   selectedValue = value as String;
-                                       // });
-                                     },
-                                     buttonHeight: 40,
-                                     buttonWidth: 140,
-                                     itemHeight: 40,
+                                           ))
+                                           .toList(),
+                                       value: model.selectedLocation,
+                                       onChanged: (value) {
+                                         model.selectedLocation= value!;
+                                         // setState(() {
+                                         //   selectedValue = value as String;
+                                         // });
+                                       },
+                                       buttonHeight: 40,
+                                       buttonWidth: 140,
+                                       itemHeight: 40,
+                                     ),
                                    ),
-                                 ),
+                                ),
                                ],
                              ),
                            ],

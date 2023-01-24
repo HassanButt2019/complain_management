@@ -44,14 +44,16 @@ class ComplaintsListViewModel extends BaseViewModel
   }
 
 
+
+
   Color getStatusColor(String value)
   {
     switch(value){
-      case "Issued":
-        return Colors.red;
-      case "Active":
+      case "New":
         return Colors.green;
-      case "Completed":
+      case "Active":
+        return Colors.yellow;
+      case "Resolved":
         return Colors.blue;
       default:
         return Colors.black;
@@ -82,6 +84,18 @@ class ComplaintsListViewModel extends BaseViewModel
       variant: DialogBoxType.complainDialog,
       title: 'Add Complain',
       mainButtonTitle: 'Add',
+
+    );
+
+    print('confirmationResponse confirmed: ${sheetResponse?.confirmed}');
+  }
+
+  Future<void> showChangeStatusDialog(String id , String title , String detail) async {
+    var sheetResponse = await _dialogService.showCustomDialog(
+      variant: DialogBoxType.statusDialog,
+      title: 'Do you want to resolve this complain?',
+      mainButtonTitle: 'Resolve',
+        data: {"id":id , "title":title , "detail":detail}
     );
 
     print('confirmationResponse confirmed: ${sheetResponse?.confirmed}');
