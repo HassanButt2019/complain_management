@@ -14,7 +14,7 @@ class AppLogo extends StatelessWidget {
       child: Container(
         height: 400.h,
         width: 400.h,
-        child: Image.asset('images/help.png')
+        child: Image.asset('images/logo.png')
         // const Asset(
         //   asset: 'images/help.png',
         // ),

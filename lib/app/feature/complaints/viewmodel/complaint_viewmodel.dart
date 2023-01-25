@@ -62,7 +62,6 @@ class ComplaintsListViewModel extends BaseViewModel
 
   Future<void> getComplains()async
   {
-    // getComplains
     loading = true;
     final response = await _complainService.getComplainsByUserId();
     print(response.data);
@@ -76,7 +75,6 @@ class ComplaintsListViewModel extends BaseViewModel
       snackbarKey.currentState
           ?.showSnackBar(SnackBar(content: Text(response.error)));
     }
-
     loading = false;
   }
   Future<void> showCustomBottomSheet() async {
@@ -84,9 +82,7 @@ class ComplaintsListViewModel extends BaseViewModel
       variant: DialogBoxType.complainDialog,
       title: 'Add Complain',
       mainButtonTitle: 'Add',
-
     );
-
     print('confirmationResponse confirmed: ${sheetResponse?.confirmed}');
   }
 
