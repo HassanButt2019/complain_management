@@ -64,7 +64,7 @@ class ComplaintsListViewModel extends BaseViewModel
   {
     // getComplains
     loading = true;
-    final response = await _complainService.getComplains();
+    final response = await _complainService.getComplainsByUserId();
     print(response.data);
     if (response.success) {
       response.data.forEach((element) {

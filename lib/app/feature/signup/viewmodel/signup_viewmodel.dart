@@ -9,17 +9,21 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-class LoginViewModel extends BaseViewModel {
-  FocusNode focusEmail = new FocusNode();
-  FocusNode focusPass = new FocusNode();
+class SignupViewModel extends BaseViewModel {
+  FocusNode focusEmail =  FocusNode();
+  FocusNode focusPass =  FocusNode();
+  FocusNode focusUserName =  FocusNode();
+
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
-  bool _loginLoading = false;
+  TextEditingController userName = TextEditingController();
 
-  bool get loginLoading =>_loginLoading;
-  set loginLoading(bool value)
+  bool _signupLoading = false;
+
+  bool get signupLoading =>_signupLoading;
+  set signupLoading(bool value)
   {
-    _loginLoading = value;
+    _signupLoading = value;
     notifyListeners();
   }
 
@@ -37,33 +41,24 @@ class LoginViewModel extends BaseViewModel {
     });
   }
 
-  Future<void> loginUser() async {
-    loginLoading = true;
-    final prefs = await SharedPreferences.getInstance();
+  Future<void> signupUser() async {
+    signupLoading = true;
     final response =
-        await _authService.loginUser(email.text.trim(), password.text.trim());
+        await _authService.signupUser(email.text.trim(), password.text.trim() , userName.text.trim());
     print(response.data);
 
     if (response.success) {
-      prefs.setString("userId", response.data["id"]);
-      print(prefs.get("userId"));
-      await navigateToComplaintList();
+      await navigateToLoginView();
     } else {
       snackbarKey.currentState?.hideCurrentSnackBar();
       snackbarKey.currentState
           ?.showSnackBar(SnackBar(content: Text(response.error)));
     }
 
-    loginLoading = false;
+    signupLoading = false;
   }
 
-  Future<void> navigateToComplaintList() async {
-    _navigationService.clearStackAndShow(complainView);
+  Future<void> navigateToLoginView() async {
+    _navigationService.clearStackAndShow(loginView);
   }
-
-  Future<void> navigateToSignupView() async {
-    _navigationService.clearStackAndShow(signupView);
-  }
-
-
 }

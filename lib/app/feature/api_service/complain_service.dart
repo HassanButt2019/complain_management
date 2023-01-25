@@ -13,9 +13,11 @@ import 'http_request.dart';
 
 class ComplainService extends BaseService
 {
-  Future<ApiResponse> getComplains() async {
+  Future<ApiResponse> getComplainsByUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.get("userId");
     final http.Response response = await get(
-      Uri.parse("${super.baseUrl}api/complain-management/complain/"),
+      Uri.parse("${super.baseUrl}api/complain-management/complain/?complain_producer_id=$userId"),
       headers: {
         "Accept": "application/json",
         "content-type": "application/json"
@@ -56,8 +58,8 @@ class ComplainService extends BaseService
       "complainTitle": title,
       "status": "New",
       "discription": desc,
-      "complainProducer": "63cd706fce190dac0c868155",
-      "complainConsumer":  prefs.get("userId"),
+      "complainProducer": prefs.get("userId"),
+      "complainConsumer": "63cd706fce190dac0c868155" ,
       "complainType": type.id,
       "complainLocation": loc.id
     });

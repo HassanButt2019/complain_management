@@ -30,9 +30,12 @@ class ComplaintsListView extends StatelessWidget {
               body: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     model.loading?Center(child: CircularProgressIndicator.adaptive(),):
-                    SizedBox(
+                   model.complains.isEmpty?Center(child: Text("No Complains Yet"),) :
+                   SizedBox(
                         height: MediaQuery.of(context).size.height * 0.95,
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(),
@@ -84,7 +87,7 @@ class ComplainListItem extends ViewModelWidget<ComplaintsListViewModel> {
     return Padding(
       padding: EdgeInsets.only(left: 10.w, right: 10.w, top: 10.h),
       child: InkWell(
-        onTap: ()async{
+        onTap:status!="Active"?null :()async{
           await viewModel.showChangeStatusDialog(complainId , title , detail);
         },
         child: Card(
