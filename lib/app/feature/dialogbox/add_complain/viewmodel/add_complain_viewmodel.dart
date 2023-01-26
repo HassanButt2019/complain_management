@@ -2,6 +2,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:netpace/app/config/routes.dart';
 import 'package:netpace/app/feature/api_service/complain_service.dart';
 import 'package:netpace/app/feature/data/model/location.dart';
@@ -31,7 +32,7 @@ class AddComplainViewModel extends BaseViewModel
 
   Location? get selectedLocation =>_selectedLocation ?? null;
   ComplainType? get selectedType=>_complainType??null;
-
+   XFile? photo = XFile("");
   bool _adding = false;
   bool get adding =>_adding;
   set adding(bool value)
@@ -108,6 +109,13 @@ class AddComplainViewModel extends BaseViewModel
     }
 
     loadingTypes = false;
+
+  }
+  Future<void> pickImage()async
+  {
+    final ImagePicker _picker = ImagePicker();
+     photo = await _picker.pickImage(source: ImageSource.camera);
+     notifyListeners();
 
   }
 

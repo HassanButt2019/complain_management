@@ -130,6 +130,24 @@ class AddComplainBottomSheet extends StatelessWidget {
                           SizedBox(
                             height: 20,
                           ),
+                          InkWell(
+                            onTap: ()async{
+                            await  model.pickImage();
+                            },
+                            child: Container(
+                              height: 60.h,
+                              padding: EdgeInsets.all(12),
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Center(child: Text(model.photo!.path != ""?model.photo!.name :"Upload Image")),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
                          Column(
                            children: [
                              Column(
